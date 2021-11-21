@@ -1,0 +1,170 @@
+package com.fellowship.api.services;
+
+import com.fellowship.api.domain.dtos.UserProfileDTO;
+import com.fellowship.api.domain.entities.FellowshipUser;
+import com.fellowship.api.domain.payload.AuthResponse;
+import com.fellowship.api.domain.payload.LoginRequest;
+import com.fellowship.api.domain.payload.SignUpRequest;
+import com.fellowship.api.repositories.UserRepository;
+import com.fellowship.api.security.authentication.TokenProvider;
+import com.fellowship.api.security.authentication.model.UserPrincipal;
+import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import java.util.Optional;
+import java.util.UUID;
+
+/**
+ * @author Created by Juan Marques on 21/11/2021
+ */
+@AllArgsConstructor
+@Service
+public class UserServiceImpl implements UserService {
+
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final TokenProvider tokenProvider;
+    private final AuthenticationManager authenticationManager;
+
+
+    @Override
+    public UserProfileDTO loadUserProfile(String userId) {
+
+        Optional<FellowshipUser> optionalUser = userRepository.findById(UUID.fromString(userId));
+
+        if (optionalUser.isPresent()) {
+            FellowshipUser user = optionalUser.get();
+            return UserProfileDTO.builder()
+                    .userId(userId)
+                    .about(user.getAbout())
+                    .birthdayDate(user.getBirthdayDate())
+                    .city(user.getCity())
+                    .contact(user.getContact())
+                    .name(user.getName())
+                    .job(user.getJob())
+                    .hobbies(user.getHobbies())
+                    .neighbourhood(user.getNeighbourhood())
+                    .profilePic(user.getProfilePic())
+                    .relationship(user.getRelationship())
+                    .build();
+        }
+
+        return UserProfileDTO.builder().build();
+    }
+
+    @Override
+    public UserProfileDTO updateUserProfile(UserProfileDTO userProfile, UserPrincipal currentUser) {
+
+        Optional<FellowshipUser> optionalUser = userRepository.findById(UUID.fromString(currentUser.getId()));
+
+        if (optionalUser.isPresent()) {
+
+            FellowshipUser user = optionalUser.get();
+
+            if (StringUtils.hasText(userProfile.getAbout())) {
+                user.setAbout(userProfile.getAbout());
+            }
+            if (StringUtils.hasText(userProfile.getRelationship())) {
+                user.setRelationship(userProfile.getRelationship());
+            }
+            if (StringUtils.hasText(userProfile.getJob())) {
+                user.setJob(userProfile.getJob());
+            }
+            if (StringUtils.hasText(userProfile.getHobbies())) {
+                user.setHobbies(userProfile.getHobbies());
+            }
+            if (StringUtils.hasText(userProfile.getCity())) {
+                user.setCity(userProfile.getCity());
+            }
+            if (StringUtils.hasText(userProfile.getContact())) {
+                user.setContact(userProfile.getContact());
+            }
+            if (StringUtils.hasText(userProfile.getBirthdayDate())) {
+                user.setBirthdayDate(userProfile.getBirthdayDate());
+            }
+            if (StringUtils.hasText(userProfile.getNeighbourhood())) {
+                user.setNeighbourhood(userProfile.getNeighbourhood());
+            }
+            return buildUserProfileDTO(userRepository.save(user));
+        }
+
+        return null;
+    }
+
+    @Override
+    public AuthResponse registerUser(SignUpRequest signUpRequest) {
+
+        // TODO - return message
+        if (existsByEmail(signUpRequest.getEmail())) {
+            return null;
+        }
+
+        FellowshipUser user = new FellowshipUser();
+
+        user.setName(signUpRequest.getName());
+        user.setEmail(signUpRequest.getEmail());
+        user.setPassword(bCryptPasswordEncoder.encode(signUpRequest.getPassword()));
+        user.setBirthdayDate(signUpRequest.getBirthdayDate());
+        user.setPostalCode(signUpRequest.getPostalCode());
+        user.setNeighbourhood(signUpRequest.getNeighbourhood());
+
+        return AuthResponse.builder()
+                .user(buildUserProfileDTO(userRepository.save(user)))
+                .token(createToken(signUpRequest.getEmail(), signUpRequest.getPassword()))
+                .build();
+    }
+
+    @Override
+    public AuthResponse doLogin(LoginRequest loginRequest) {
+        Optional<FellowshipUser> optionalUser = userRepository.findByEmail(loginRequest.getEmail());
+
+        if (optionalUser.isPresent()) {
+            FellowshipUser user = optionalUser.get();
+            return AuthResponse.builder()
+                    .user(buildUserProfileDTO(user))
+                    .token(createToken(loginRequest.getEmail(), loginRequest.getPassword()))
+                    .build();
+        }
+        return null;
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
+
+    private String createToken(String email, String password) {
+
+        // Authenticate before create token
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(email, password));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        return tokenProvider.createToken(authentication);
+    }
+
+    private UserProfileDTO buildUserProfileDTO(FellowshipUser dbUser) {
+
+        return UserProfileDTO.builder()
+                .userId(dbUser.getId().toString())
+                .about(dbUser.getAbout())
+                .birthdayDate(dbUser.getBirthdayDate())
+                .city(dbUser.getCity())
+                .contact(dbUser.getContact())
+                .name(dbUser.getName())
+                .job(dbUser.getJob())
+                .hobbies(dbUser.getHobbies())
+                .neighbourhood(dbUser.getNeighbourhood())
+                .profilePic(dbUser.getProfilePic())
+                .relationship(dbUser.getRelationship())
+                .postalCode(dbUser.getPostalCode())
+                .build();
+    }
+}
