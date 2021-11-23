@@ -13,6 +13,8 @@ import com.fellowship.api.security.authentication.model.UserPrincipal;
 public interface UserService {
     UserProfileDTO loadUserProfile(String userId);
     UserProfileDTO updateUserProfile(UserProfileDTO userProfile, UserPrincipal currentUser);
+    UserProfileDTO updateSettings(UserProfileDTO userProfile, UserPrincipal currentUser);
+    void updateProfilePic(String profilePicUrl,UserPrincipal currentUser);
     AuthResponse doLogin(LoginRequest loginRequest);
     AuthResponse registerUser(SignUpRequest signUpRequest);
     boolean existsByEmail(String email);

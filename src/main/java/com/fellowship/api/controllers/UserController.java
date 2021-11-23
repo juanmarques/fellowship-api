@@ -23,13 +23,24 @@ public class UserController {
 
     private final UserService userService;
 
-    @PutMapping("/update_profile")
+    @PutMapping("/update-profile")
     private ResponseEntity<?> updateProfile(@RequestBody UserProfileDTO userProfile,@CurrentUser UserPrincipal currentUser) {
-        return ResponseEntity.ok(userService.updateUserProfile(userProfile,currentUser));
+        return ResponseEntity.ok(this.userService.updateUserProfile(userProfile,currentUser));
+    }
+
+    @PutMapping("/update-settings")
+    private ResponseEntity<?> updateSettings(@RequestBody UserProfileDTO userProfile,@CurrentUser UserPrincipal currentUser) {
+        return ResponseEntity.ok(this.userService.updateUserProfile(userProfile,currentUser));
+    }
+
+    @PutMapping("/profile_pic/update")
+    private ResponseEntity<?> updateProfilePic(@RequestBody String profilePicUrl,@CurrentUser UserPrincipal currentUser) {
+        this.userService.updateProfilePic(profilePicUrl,currentUser);
+        return ResponseEntity.ok("Foto alterada com sucesso");
     }
 
     @GetMapping("/{user_id}")
     private ResponseEntity<?> loadUserProfile(@PathVariable String user_id) {
-        return ResponseEntity.ok(userService.loadUserProfile(user_id));
+        return ResponseEntity.ok(this.userService.loadUserProfile(user_id));
     }
 }

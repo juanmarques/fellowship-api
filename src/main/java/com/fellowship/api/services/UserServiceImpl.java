@@ -1,5 +1,7 @@
 package com.fellowship.api.services;
 
+import com.fellowship.api.controllers.exception.BadRequestException;
+import com.fellowship.api.controllers.exception.ResourceNotFoundException;
 import com.fellowship.api.domain.dtos.UserProfileDTO;
 import com.fellowship.api.domain.entities.FellowshipUser;
 import com.fellowship.api.domain.payload.AuthResponse;
@@ -15,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.Optional;
@@ -36,10 +39,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserProfileDTO loadUserProfile(String userId) {
 
-        Optional<FellowshipUser> optionalUser = userRepository.findById(UUID.fromString(userId));
+        FellowshipUser user = userOrNull(userId);
 
-        if (optionalUser.isPresent()) {
-            FellowshipUser user = optionalUser.get();
+        if (user != null) {
             return UserProfileDTO.builder()
                     .userId(userId)
                     .about(user.getAbout())
@@ -61,11 +63,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserProfileDTO updateUserProfile(UserProfileDTO userProfile, UserPrincipal currentUser) {
 
-        Optional<FellowshipUser> optionalUser = userRepository.findById(UUID.fromString(currentUser.getId()));
+        FellowshipUser user = userOrNull(currentUser.getId());
 
-        if (optionalUser.isPresent()) {
-
-            FellowshipUser user = optionalUser.get();
+        if (user != null) {
 
             if (StringUtils.hasText(userProfile.getAbout())) {
                 user.setAbout(userProfile.getAbout());
@@ -91,18 +91,55 @@ public class UserServiceImpl implements UserService {
             if (StringUtils.hasText(userProfile.getNeighbourhood())) {
                 user.setNeighbourhood(userProfile.getNeighbourhood());
             }
-            return buildUserProfileDTO(userRepository.save(user));
+            return buildUserProfileDTO(this.userRepository.save(user));
         }
 
-        return null;
+        throw new ResourceNotFoundException("Usuario", currentUser.getId(), "nao encontrado");
+    }
+
+    @Override
+    public UserProfileDTO updateSettings(UserProfileDTO userProfile, UserPrincipal currentUser) {
+
+        FellowshipUser user = userOrNull(currentUser.getId());
+
+        if (user != null) {
+            if (ObjectUtils.isEmpty(userProfile.getName())) {
+                user.setName(userProfile.getName());
+            }
+            if (ObjectUtils.isEmpty(userProfile.getPostalCode())) {
+                user.setPostalCode(userProfile.getPostalCode());
+            }
+            if (ObjectUtils.isEmpty(userProfile.getPassword())) {
+                user.setPassword(bCryptPasswordEncoder.encode(userProfile.getPassword()));
+            }
+            if (ObjectUtils.isEmpty(userProfile.getNeighbourhood())) {
+                user.setNeighbourhood(bCryptPasswordEncoder.encode(userProfile.getNeighbourhood()));
+            }
+
+            this.userRepository.save(user);
+        }
+        throw new ResourceNotFoundException("Usuario", currentUser.getId(), "nao encontrado");
+    }
+
+    @Override
+    public void updateProfilePic(String profilePicUrl, UserPrincipal currentUser) {
+        FellowshipUser user = userOrNull(currentUser.getId());
+
+        if (user != null) {
+            user.setProfilePic(profilePicUrl);
+            this.userRepository.save(user);
+        }
+    }
+
+    private FellowshipUser userOrNull(String userId) {
+        return this.userRepository.findById(UUID.fromString(userId)).orElse(null);
     }
 
     @Override
     public AuthResponse registerUser(SignUpRequest signUpRequest) {
 
-        // TODO - return message
         if (existsByEmail(signUpRequest.getEmail())) {
-            return null;
+            throw new BadRequestException("Usuario ou senha incorreto");
         }
 
         FellowshipUser user = new FellowshipUser();
@@ -115,14 +152,14 @@ public class UserServiceImpl implements UserService {
         user.setNeighbourhood(signUpRequest.getNeighbourhood());
 
         return AuthResponse.builder()
-                .user(buildUserProfileDTO(userRepository.save(user)))
+                .user(buildUserProfileDTO(this.userRepository.save(user)))
                 .token(createToken(signUpRequest.getEmail(), signUpRequest.getPassword()))
                 .build();
     }
 
     @Override
     public AuthResponse doLogin(LoginRequest loginRequest) {
-        Optional<FellowshipUser> optionalUser = userRepository.findByEmail(loginRequest.getEmail());
+        Optional<FellowshipUser> optionalUser = this.userRepository.findByEmail(loginRequest.getEmail());
 
         if (optionalUser.isPresent()) {
             FellowshipUser user = optionalUser.get();
@@ -131,12 +168,12 @@ public class UserServiceImpl implements UserService {
                     .token(createToken(loginRequest.getEmail(), loginRequest.getPassword()))
                     .build();
         }
-        return null;
+        throw new BadRequestException("Usuario ou senha incorreto");
     }
 
     @Override
     public boolean existsByEmail(String email) {
-        return userRepository.findByEmail(email).isPresent();
+        return this.userRepository.findByEmail(email).isPresent();
     }
 
     private String createToken(String email, String password) {

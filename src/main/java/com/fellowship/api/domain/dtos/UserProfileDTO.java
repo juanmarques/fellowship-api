@@ -19,11 +19,12 @@ public class UserProfileDTO implements Serializable {
     private String profilePic;
     private String birthdayDate;
     private String neighbourhood;
+    private String postalCode;
+    private String password;
     private String job;
     private String city;
     private String hobbies;
     private String contact;
     private String relationship;
     private String about;
-    private String postalCode;
 }
