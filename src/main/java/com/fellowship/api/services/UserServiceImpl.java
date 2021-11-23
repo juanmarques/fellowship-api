@@ -119,7 +119,7 @@ public class UserServiceImpl implements UserService {
                 user.setPassword(bCryptPasswordEncoder.encode(userProfile.getPassword()));
             }
 
-            this.userRepository.save(user);
+           return buildUserProfileDTO(this.userRepository.save(user));
         }
         throw new ResourceNotFoundException("Usuario", currentUser.getId(), "nao encontrado");
     }
