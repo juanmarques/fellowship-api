@@ -18,7 +18,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -67,28 +66,28 @@ public class UserServiceImpl implements UserService {
 
         if (user != null) {
 
-            if (StringUtils.hasText(userProfile.getAbout())) {
+            if (userProfile.getAbout() != null) {
                 user.setAbout(userProfile.getAbout());
             }
-            if (StringUtils.hasText(userProfile.getRelationship())) {
+            if (userProfile.getRelationship() != null) {
                 user.setRelationship(userProfile.getRelationship());
             }
-            if (StringUtils.hasText(userProfile.getJob())) {
+            if (userProfile.getJob() != null) {
                 user.setJob(userProfile.getJob());
             }
-            if (StringUtils.hasText(userProfile.getHobbies())) {
+            if (userProfile.getHobbies() != null) {
                 user.setHobbies(userProfile.getHobbies());
             }
-            if (StringUtils.hasText(userProfile.getCity())) {
+            if (userProfile.getCity() != null) {
                 user.setCity(userProfile.getCity());
             }
-            if (StringUtils.hasText(userProfile.getContact())) {
+            if (userProfile.getContact() != null) {
                 user.setContact(userProfile.getContact());
             }
-            if (StringUtils.hasText(userProfile.getBirthdayDate())) {
+            if (userProfile.getBirthdayDate() != null) {
                 user.setBirthdayDate(userProfile.getBirthdayDate());
             }
-            if (StringUtils.hasText(userProfile.getNeighbourhood())) {
+            if (userProfile.getNeighbourhood() != null) {
                 user.setNeighbourhood(userProfile.getNeighbourhood());
             }
             return buildUserProfileDTO(this.userRepository.save(user));
