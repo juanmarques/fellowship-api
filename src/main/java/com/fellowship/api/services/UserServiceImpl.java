@@ -108,11 +108,15 @@ public class UserServiceImpl implements UserService {
             if (ObjectUtils.isEmpty(userProfile.getPostalCode())) {
                 user.setPostalCode(userProfile.getPostalCode());
             }
+            if (ObjectUtils.isEmpty(userProfile.getNeighbourhood())) {
+                user.setNeighbourhood(userProfile.getNeighbourhood());
+            }
+
+            if (ObjectUtils.isEmpty(userProfile.getEmail())) {
+                user.setEmail(userProfile.getEmail());
+            }
             if (ObjectUtils.isEmpty(userProfile.getPassword())) {
                 user.setPassword(bCryptPasswordEncoder.encode(userProfile.getPassword()));
-            }
-            if (ObjectUtils.isEmpty(userProfile.getNeighbourhood())) {
-                user.setNeighbourhood(bCryptPasswordEncoder.encode(userProfile.getNeighbourhood()));
             }
 
             this.userRepository.save(user);
@@ -201,6 +205,7 @@ public class UserServiceImpl implements UserService {
                 .profilePic(dbUser.getProfilePic())
                 .relationship(dbUser.getRelationship())
                 .postalCode(dbUser.getPostalCode())
+                .email(dbUser.getEmail())
                 .build();
     }
 }

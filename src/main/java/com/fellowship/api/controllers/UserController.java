@@ -30,7 +30,7 @@ public class UserController {
 
     @PutMapping("/update_settings")
     private ResponseEntity<?> updateSettings(@RequestBody UserProfileDTO userProfile,@CurrentUser UserPrincipal currentUser) {
-        return ResponseEntity.ok(this.userService.updateUserProfile(userProfile,currentUser));
+        return ResponseEntity.ok(this.userService.updateSettings(userProfile,currentUser));
     }
 
     @PutMapping("/profile_pic/update")
