@@ -102,20 +102,20 @@ public class UserServiceImpl implements UserService {
         FellowshipUser user = userOrNull(currentUser.getId());
 
         if (user != null) {
-            if (ObjectUtils.isEmpty(userProfile.getName())) {
+            if (!ObjectUtils.isEmpty(userProfile.getName())) {
                 user.setName(userProfile.getName());
             }
-            if (ObjectUtils.isEmpty(userProfile.getPostalCode())) {
+            if (!ObjectUtils.isEmpty(userProfile.getPostalCode())) {
                 user.setPostalCode(userProfile.getPostalCode());
             }
-            if (ObjectUtils.isEmpty(userProfile.getNeighbourhood())) {
+            if (!ObjectUtils.isEmpty(userProfile.getNeighbourhood())) {
                 user.setNeighbourhood(userProfile.getNeighbourhood());
             }
 
-            if (ObjectUtils.isEmpty(userProfile.getEmail())) {
+            if (!ObjectUtils.isEmpty(userProfile.getEmail())) {
                 user.setEmail(userProfile.getEmail());
             }
-            if (ObjectUtils.isEmpty(userProfile.getPassword())) {
+            if (!ObjectUtils.isEmpty(userProfile.getPassword())) {
                 user.setPassword(bCryptPasswordEncoder.encode(userProfile.getPassword()));
             }
 
