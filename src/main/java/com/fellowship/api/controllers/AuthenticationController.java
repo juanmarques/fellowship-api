@@ -39,7 +39,7 @@ public class AuthenticationController {
     public ResponseEntity<?> registerUser(@RequestBody SignUpRequest signUpRequest) {
 
         if (userService.existsByEmail(signUpRequest.getEmail())) {
-            throw new BadRequestException("Email address already in use.");
+            throw new BadRequestException("Endereço de email já está em uso");
         }
         return ResponseEntity.ok()
                 .body(userService.registerUser(signUpRequest));

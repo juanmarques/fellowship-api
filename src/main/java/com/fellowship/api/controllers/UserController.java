@@ -23,12 +23,12 @@ public class UserController {
 
     private final UserService userService;
 
-    @PutMapping("/update-profile")
+    @PutMapping("/update_profile")
     private ResponseEntity<?> updateProfile(@RequestBody UserProfileDTO userProfile,@CurrentUser UserPrincipal currentUser) {
         return ResponseEntity.ok(this.userService.updateUserProfile(userProfile,currentUser));
     }
 
-    @PutMapping("/update-settings")
+    @PutMapping("/update_settings")
     private ResponseEntity<?> updateSettings(@RequestBody UserProfileDTO userProfile,@CurrentUser UserPrincipal currentUser) {
         return ResponseEntity.ok(this.userService.updateUserProfile(userProfile,currentUser));
     }
