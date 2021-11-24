@@ -26,7 +26,8 @@ public class Post {
     private UUID id;
     private String text;
     private Long created;
-    private String imageUrl;
+    private String mediaUrl;
+    private String mediaType;
     private String postType;
     @ManyToOne
     @JoinColumn(name = "fellowship_user_id")
