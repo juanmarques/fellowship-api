@@ -25,7 +25,7 @@ public class Post {
     @GeneratedValue
     private UUID id;
     private String text;
-    private Long created;
+    private Long createdAt;
     private String mediaUrl;
     private String mediaType;
     private String postType;
