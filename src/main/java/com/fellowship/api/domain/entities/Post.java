@@ -26,14 +26,15 @@ public class Post {
     private UUID id;
     private String text;
     private Long createdAt;
-    private String mediaUrl;
-    private String mediaType;
     private String postType;
+    private String postLocalization;
     @ManyToOne
     @JoinColumn(name = "fellowship_user_id")
     private FellowshipUser fellowshipUser;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
     private List<Comment> comments;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
+    private List<MediaPost> mediaPosts;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
     private List<Cheer> cheers;
 }
