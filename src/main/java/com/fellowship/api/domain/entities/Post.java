@@ -26,7 +26,7 @@ public class Post {
     private UUID id;
     private String text;
     private Long createdAt;
-    private String postType;
+    private int postType;
     private String postLocalization;
     @ManyToOne
     @JoinColumn(name = "fellowship_user_id")
