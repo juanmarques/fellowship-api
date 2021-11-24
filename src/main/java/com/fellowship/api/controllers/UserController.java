@@ -34,8 +34,8 @@ public class UserController {
     }
 
     @PutMapping("/profile_pic/update")
-    private ResponseEntity<?> updateProfilePic(@RequestBody String profilePicUrl,@CurrentUser UserPrincipal currentUser) {
-        this.userService.updateProfilePic(profilePicUrl,currentUser);
+    private ResponseEntity<?> updateProfilePic(@RequestBody UserProfileDTO userProfile,@CurrentUser UserPrincipal currentUser) {
+        this.userService.updateProfilePic(userProfile.getProfilePic(),currentUser);
         return ResponseEntity.ok("Foto alterada com sucesso");
     }
 
