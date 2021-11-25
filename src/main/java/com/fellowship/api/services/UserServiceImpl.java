@@ -171,7 +171,7 @@ public class UserServiceImpl implements UserService {
                     .token(createToken(loginRequest.getEmail(), loginRequest.getPassword()))
                     .build();
         }
-        throw new BadRequestException("Usuario ou senha incorreto");
+        throw new BadRequestException("O email que você inseriu não está conectado a uma conta.");
     }
 
     @Override

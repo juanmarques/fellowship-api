@@ -1,30 +1,34 @@
 package com.fellowship.api.domain.entities;
 
-import org.hibernate.annotations.GenericGenerator;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
  * @author Created by Juan Marques on 20/11/2021
  */
 @Entity
-public class Comment {
+@Getter
+@Setter
+public class Comment implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private String text;
     private Long created;
     @ManyToOne
-    @JoinColumn(name="fellowship_user_id")
+    @JoinColumn(name = "fellowship_user_id", referencedColumnName = "id")
     private FellowshipUser fellowshipUser;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
+    @ManyToOne
+    @JoinColumn(name = "post_id", referencedColumnName = "id")
     private Post post;
 }

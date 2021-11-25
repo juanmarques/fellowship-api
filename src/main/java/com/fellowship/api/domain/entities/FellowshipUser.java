@@ -3,10 +3,13 @@ package com.fellowship.api.domain.entities;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,10 +20,10 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-public class FellowshipUser {
+public class FellowshipUser implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     private String name;
@@ -37,8 +40,8 @@ public class FellowshipUser {
     private String contact;
     private String relationship;
     private String about;
-    @OneToMany
+    @OneToMany(mappedBy = "fellowshipUser", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> post;
-    @OneToMany
+    @OneToMany(mappedBy = "fellowshipUser",  cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Cheer> cheers;
 }
