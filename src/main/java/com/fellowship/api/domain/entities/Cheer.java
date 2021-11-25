@@ -31,4 +31,8 @@ public class Cheer implements Serializable {
     @ManyToOne
     @JoinColumn(name = "post_id", referencedColumnName = "id")
     private Post post;
+
+    private boolean active;
+
+    private Integer cheerType;
 }
