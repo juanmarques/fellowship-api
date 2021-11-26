@@ -30,6 +30,9 @@ public class Post implements Serializable {
     private Long createdAt;
     private int postType;
     private String postLocalization;
+    private String tags;
+    private String propertyType;
+    private Long propertyPrice;
 
     @ManyToOne
     @JoinColumn(name = "fellowshipUser_id", referencedColumnName = "id")
