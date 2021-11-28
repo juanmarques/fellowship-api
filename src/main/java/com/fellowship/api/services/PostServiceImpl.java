@@ -43,6 +43,9 @@ public class PostServiceImpl implements PostService {
                 }).collect(Collectors.toList()));
         newPost.setPostType(postDTO.getPostType());
         newPost.setPostLocalization(postDTO.getPostLocalization());
+        newPost.setPropertyPrice(postDTO.getPropertyPrice());
+        newPost.setTag(postDTO.getTag());
+        newPost.setPropertyType(postDTO.getPropertyType());
         newPost.setFellowshipUser(userRepository.findById(UUID.fromString(currentUser.getId())).orElseThrow());
 
         return buildPostDTO(postRepository.save(newPost));
