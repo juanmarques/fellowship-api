@@ -87,22 +87,26 @@ public class PostServiceImpl implements PostService {
                 .text(post.getText())
                 .createdAt(post.getCreatedAt())
                 .name(post.getFellowshipUser().getName())
-                .profilePic(post.getFellowshipUser().getProfilePic());
+                .profilePic(post.getFellowshipUser().getProfilePic())
+                .tag(post.getTag())
+                .propertyPrice(post.getPropertyPrice())
+                .propertyType(post.getPropertyType());
 
         if (post.getMediaPosts() != null) {
             postDTOBuilder.mediaPosts(post.getMediaPosts().stream().map(dbMedia -> MediaPostDTO.builder().mediaType(dbMedia.getMediaType())
                     .mediaUrl(dbMedia.getMediaUrl()).build()).collect(Collectors.toList()));
-
-            if (post.getComments() != null) {
-                postDTOBuilder.comments(post.getComments().stream().map(dbComments -> CommentDTO.builder()
-                        .commentId(String.valueOf(dbComments.getId()))
-                        .createdAt(dbComments.getCreated())
-                        .text(dbComments.getText())
-                        .postId(String.valueOf(post.getId()))
-                        .userId(String.valueOf(dbComments.getFellowshipUser().getId())).build())
-                        .collect(Collectors.toList()));
-            }
         }
+
+        if (post.getComments() != null) {
+            postDTOBuilder.comments(post.getComments().stream().map(dbComments -> CommentDTO.builder()
+                    .commentId(String.valueOf(dbComments.getId()))
+                    .createdAt(dbComments.getCreated())
+                    .text(dbComments.getText())
+                    .postId(String.valueOf(post.getId()))
+                    .userId(String.valueOf(dbComments.getFellowshipUser().getId())).build())
+                    .collect(Collectors.toList()));
+        }
+
         return postDTOBuilder.build();
     }
 }
