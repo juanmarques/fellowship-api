@@ -30,7 +30,7 @@ public class Post implements Serializable {
     private Long createdAt;
     private int postType;
     private String postLocalization;
-    private String tags;
+    private String tag;
     private String propertyType;
     private Long propertyPrice;
 

@@ -20,6 +20,9 @@ public class PostDTO implements Serializable {
     private String postLocalization;
     private String profilePic;
     private String name;
+    private String tag;
+    private String propertyType;
+    private Long propertyPrice;
     private List<CommentDTO> comments;
     private List<MediaPostDTO> mediaPosts;
 }
