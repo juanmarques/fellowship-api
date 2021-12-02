@@ -13,6 +13,7 @@ import com.fellowship.api.security.authentication.model.UserPrincipal;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -74,6 +75,15 @@ public class PostServiceImpl implements PostService {
     @Override
     public void reportComment(CommentDTO commentDTO) {
 
+    }
+
+    @Override
+    public List<PostDTO> getPostByType(int postType) {
+
+       return postRepository.findPostByPostTypeOrderByCreatedAtDesc(postType)
+                .parallelStream()
+                .map(this::buildPostDTO)
+               .collect(Collectors.toList());
     }
 
     private PostDTO buildPostDTO(Post post) {

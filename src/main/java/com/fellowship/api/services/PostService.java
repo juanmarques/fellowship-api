@@ -5,6 +5,8 @@ import com.fellowship.api.domain.dtos.PostDTO;
 import com.fellowship.api.security.authentication.CurrentUser;
 import com.fellowship.api.security.authentication.model.UserPrincipal;
 
+import java.util.List;
+
 /**
  * @author Created by Juan Marques on 24/11/2021
  */
@@ -17,4 +19,6 @@ public interface PostService {
     CommentDTO addComment (CommentDTO commentDTO);
     void deleteComment(CommentDTO commentDTO);
     void reportComment (CommentDTO commentDTO);
+
+    List<PostDTO> getPostByType(int postType);
 }
