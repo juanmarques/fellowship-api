@@ -8,7 +8,6 @@ import java.util.UUID;
 /**
  * @author Created by Juan Marques on 24/11/2021
  */
-public interface CommentRepository extends JpaRepository<Comment, String> {
+public interface CommentRepository extends JpaRepository<Comment, UUID> {
 
-    void deleteById(UUID commentId);
 }

@@ -28,7 +28,7 @@ public class CommentServiceImpl implements CommentService {
 
         Comment comment = new Comment();
         comment.setFellowshipUser(userRepository.findById(UUID.fromString(commentDTO.getUserId())).orElseThrow());
-        comment.setPost(postRepository.findById(commentDTO.getPostId()).orElseThrow());
+        comment.setPost(postRepository.findById(UUID.fromString(commentDTO.getPostId())).orElseThrow());
         comment.setText(commentDTO.getText());
         comment.setCreated(commentDTO.getCreatedAt());
 

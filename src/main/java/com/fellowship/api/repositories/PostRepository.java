@@ -11,9 +11,7 @@ import java.util.UUID;
  * @author Created by Juan Marques on 21/11/2021
  */
 @Repository
-public interface PostRepository extends JpaRepository<Post, String> {
+public interface PostRepository extends JpaRepository<Post, UUID> {
 
     List<Post> findPostByPostTypeOrderByCreatedAtDesc(int postType);
-
-    void deleteById(UUID postId);
 }
