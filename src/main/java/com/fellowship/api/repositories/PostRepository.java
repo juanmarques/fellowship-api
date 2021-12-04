@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Created by Juan Marques on 21/11/2021
@@ -14,4 +15,5 @@ public interface PostRepository extends JpaRepository<Post, String> {
 
     List<Post> findPostByPostTypeOrderByCreatedAtDesc(int postType);
 
+    void deleteById(UUID postId);
 }

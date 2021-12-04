@@ -52,7 +52,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void deletePost(String postId) {
-        this.postRepository.deleteById(postId);
+        this.postRepository.deleteById(UUID.fromString(postId));
     }
 
     @Override
