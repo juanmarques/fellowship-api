@@ -7,9 +7,9 @@ import com.fellowship.api.domain.dtos.CommentDTO;
  */
 public interface CommentService {
 
-    CommentDTO addComment(CommentDTO commentDTO);
+    CommentDTO createComment(CommentDTO commentDTO);
 
-    void deleteComment(CommentDTO commentDTO);
+    void deleteComment(String commentId);
 
     void reportComment(CommentDTO commentDTO);
 

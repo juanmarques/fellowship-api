@@ -5,7 +5,6 @@ import com.fellowship.api.domain.dtos.MediaPostDTO;
 import com.fellowship.api.domain.dtos.PostDTO;
 import com.fellowship.api.domain.entities.MediaPost;
 import com.fellowship.api.domain.entities.Post;
-import com.fellowship.api.repositories.CommentRepository;
 import com.fellowship.api.repositories.PostRepository;
 import com.fellowship.api.repositories.UserRepository;
 import com.fellowship.api.security.authentication.CurrentUser;
@@ -25,7 +24,6 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
-    private final CommentRepository commentRepository;
     private final UserRepository userRepository;
 
     @Override
@@ -53,27 +51,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void deletePost(PostDTO postDTO) {
-        this.postRepository.deleteById(postDTO.getPostId());
+    public void deletePost(String postId) {
+        this.postRepository.deleteById(postId);
     }
 
     @Override
     public void reportPost(PostDTO postDTO) {
-
-    }
-
-    @Override
-    public CommentDTO addComment(CommentDTO commentDTO) {
-        return null;
-    }
-
-    @Override
-    public void deleteComment(CommentDTO commentDTO) {
-        this.commentRepository.deleteById(commentDTO.getCommentId());
-    }
-
-    @Override
-    public void reportComment(CommentDTO commentDTO) {
 
     }
 

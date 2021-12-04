@@ -34,9 +34,9 @@ public class PostController {
         return ResponseEntity.ok(postService.getPostByType(postType));
     }
 
-    @DeleteMapping("/delete")
-    private void deletePost(@RequestBody PostDTO postDTO, @CurrentUser UserPrincipal currentUser) {
-        this.postService.deletePost(postDTO);
+    @DeleteMapping("/delete/{postId}")
+    private void deletePost(@PathVariable String postId) {
+        this.postService.deletePost(postId);
     }
 
     @PostMapping("/report")

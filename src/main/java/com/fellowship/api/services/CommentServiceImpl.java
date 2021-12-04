@@ -24,7 +24,7 @@ public class CommentServiceImpl implements CommentService {
     private final UserRepository userRepository;
 
     @Override
-    public CommentDTO addComment(CommentDTO commentDTO) {
+    public CommentDTO createComment(CommentDTO commentDTO) {
 
         Comment comment = new Comment();
         comment.setFellowshipUser(userRepository.findById(UUID.fromString(commentDTO.getUserId())).orElseThrow());
@@ -36,8 +36,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void deleteComment(CommentDTO commentDTO) {
-        this.commentRepository.deleteById(commentDTO.getCommentId());
+    public void deleteComment(String commentId) {
+        this.commentRepository.deleteById(commentId);
     }
 
     @Override
