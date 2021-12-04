@@ -26,5 +26,6 @@ public class PostDTO implements Serializable {
     private String propertyPrice;
     private List<CommentDTO> comments;
     private List<MediaPostDTO> mediaPosts;
+    private List<CheerDTO> likes;
 }
 

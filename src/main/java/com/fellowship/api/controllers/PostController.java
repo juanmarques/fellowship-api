@@ -1,8 +1,10 @@
 package com.fellowship.api.controllers;
 
+import com.fellowship.api.domain.dtos.CheerDTO;
 import com.fellowship.api.domain.dtos.PostDTO;
 import com.fellowship.api.security.authentication.CurrentUser;
 import com.fellowship.api.security.authentication.model.UserPrincipal;
+import com.fellowship.api.services.CheerService;
 import com.fellowship.api.services.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PostController {
 
     private final PostService postService;
+    private final CheerService cheerService;
 
     @PostMapping("/create")
     private ResponseEntity<?> createPost(@RequestBody PostDTO postDTO, @CurrentUser UserPrincipal currentUser) {
@@ -42,5 +45,15 @@ public class PostController {
     @PostMapping("/report")
     private void reportPost(@RequestBody PostDTO postDTO, @CurrentUser UserPrincipal currentUser) {
 
+    }
+
+    @PostMapping("/add-like")
+    private ResponseEntity<?> addLike(@RequestBody CheerDTO cheerDTO, @CurrentUser UserPrincipal currentUser) {
+        return ResponseEntity.ok(cheerService.addLike(cheerDTO, currentUser));
+    }
+
+    @PostMapping("/remove-like/{likeId}")
+    private void removeLike(@PathVariable String likeId) {
+        this.cheerService.removeLike(likeId);
     }
 }
