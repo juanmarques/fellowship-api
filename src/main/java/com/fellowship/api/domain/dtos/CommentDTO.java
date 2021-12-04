@@ -11,9 +11,12 @@ import java.io.Serializable;
 @Data
 @Builder
 public class CommentDTO implements Serializable {
+
     private String commentId;
     private String postId;
     private String userId;
+    private String userPic;
+    private String name;
     private String text;
     private Long createdAt;
 }

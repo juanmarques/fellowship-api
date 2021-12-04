@@ -113,6 +113,8 @@ public class PostServiceImpl implements PostService {
                     .createdAt(dbComments.getCreated())
                     .text(dbComments.getText())
                     .postId(String.valueOf(post.getId()))
+                    .userPic(dbComments.getFellowshipUser().getProfilePic())
+                    .name(dbComments.getFellowshipUser().getName())
                     .userId(String.valueOf(dbComments.getFellowshipUser().getId())).build())
                     .collect(Collectors.toList()));
         }

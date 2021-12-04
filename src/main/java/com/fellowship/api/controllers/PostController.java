@@ -24,17 +24,22 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/create")
-    private ResponseEntity<?> createPost(@RequestBody PostDTO postDTO, @CurrentUser UserPrincipal currentUser){
-        return ResponseEntity.ok(postService.createPost(postDTO,currentUser));
+    private ResponseEntity<?> createPost(@RequestBody PostDTO postDTO, @CurrentUser UserPrincipal currentUser) {
+        return ResponseEntity.ok(postService.createPost(postDTO, currentUser));
     }
 
     @GetMapping("/{postType}")
-    private ResponseEntity<?> getPostByType(@PathVariable int postType){
+    private ResponseEntity<?> getPostByType(@PathVariable int postType) {
         return ResponseEntity.ok(postService.getPostByType(postType));
     }
 
-    @PostMapping("/delete-post")
-    private void deletePost(@RequestBody PostDTO postDTO, @CurrentUser UserPrincipal currentUser){
+    @PostMapping("/delete")
+    private void deletePost(@RequestBody PostDTO postDTO, @CurrentUser UserPrincipal currentUser) {
         this.postService.deletePost(postDTO);
+    }
+
+    @PostMapping("/report")
+    private void reportPost(@RequestBody PostDTO postDTO, @CurrentUser UserPrincipal currentUser) {
+
     }
 }
