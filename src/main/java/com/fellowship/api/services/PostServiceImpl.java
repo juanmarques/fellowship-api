@@ -78,6 +78,7 @@ public class PostServiceImpl implements PostService {
                 .postType(post.getPostType())
                 .postLocalization(post.getPostLocalization())
                 .text(post.getText())
+                .userId(String.valueOf(post.getFellowshipUser().getId()))
                 .createdAt(post.getCreatedAt())
                 .name(post.getFellowshipUser().getName())
                 .profilePic(post.getFellowshipUser().getProfilePic())

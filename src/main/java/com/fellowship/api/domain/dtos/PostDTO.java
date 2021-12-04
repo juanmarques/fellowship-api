@@ -14,6 +14,7 @@ import java.util.List;
 public class PostDTO implements Serializable {
 
     private String postId;
+    private String userId;
     private String text;
     private Long createdAt;
     private int postType;
