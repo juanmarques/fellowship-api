@@ -6,6 +6,7 @@ import com.fellowship.api.security.authentication.model.UserPrincipal;
 import com.fellowship.api.services.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,7 +34,7 @@ public class PostController {
         return ResponseEntity.ok(postService.getPostByType(postType));
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     private void deletePost(@RequestBody PostDTO postDTO, @CurrentUser UserPrincipal currentUser) {
         this.postService.deletePost(postDTO);
     }
