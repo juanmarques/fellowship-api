@@ -18,7 +18,7 @@ public interface UserRepository extends JpaRepository<FellowshipUser, UUID> {
 
     Optional<FellowshipUser> findByEmail(String email);
 
-    @Query("select user.postalCode as postalCode,user.neighbourhood as neighbourhood from FellowshipUser user")
+    @Query("select distinct user.postalCode as postalCode,user.neighbourhood as neighbourhood from FellowshipUser user")
     List<NeighbourhoodsSample> findAllNeighbourhoods();
 
 }
