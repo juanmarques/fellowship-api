@@ -13,6 +13,6 @@ import java.util.UUID;
 public interface CheerRepository extends JpaRepository<Cheer, UUID> {
 
 
-    @Query("SELECT u FROM Cheer u WHERE u.fellowshipUser.id = ?1")
-    Optional<Cheer> findByUserId(UUID userId);
+    @Query("SELECT u FROM Cheer u WHERE u.fellowshipUser.id=?1 AND u.post.id= ?2")
+    Optional<Cheer> findByUserIdAndPostId(UUID userId,UUID postId);
 }

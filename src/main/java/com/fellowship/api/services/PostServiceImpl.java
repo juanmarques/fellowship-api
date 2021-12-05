@@ -79,7 +79,7 @@ public class PostServiceImpl implements PostService, CheerService {
     public CheerDTO addLike(CheerDTO cheerDTO, UserPrincipal currentUser) {
 
         Optional<Cheer> optionalCheer = cheerRepository
-                .findByUserId(UUID.fromString(cheerDTO.getUserId()));
+                .findByUserIdAndPostId(UUID.fromString(cheerDTO.getUserId()),UUID.fromString(cheerDTO.getPostId()));
 
         if (optionalCheer.isPresent()) {
             optionalCheer.get().setActive(cheerDTO.isActive());
