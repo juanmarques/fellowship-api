@@ -66,9 +66,10 @@ public class PostServiceImpl implements PostService, CheerService {
     }
 
     @Override
-    public List<PostDTO> getPostByType(int postType) {
+    public List<PostDTO> getPostByType(int postType,@CurrentUser UserPrincipal currentUser) {
 
-        return postRepository.findPostByPostTypeOrderByCreatedAtDesc(postType)
+        return postRepository.findPostByPostTypeAndPostLocalizationOrderByCreatedAtDesc(postType,
+                userRepository.findById(UUID.fromString(currentUser.getId())).orElseThrow().getPostalCode())
                 .parallelStream()
                 .map(this::buildPostDTO)
                 .collect(Collectors.toList());

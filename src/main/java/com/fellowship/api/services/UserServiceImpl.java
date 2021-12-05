@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
                 user.setName(userProfile.getName());
             }
             if (!ObjectUtils.isEmpty(userProfile.getPostalCode())) {
-                user.setPostalCode(userProfile.getPostalCode());
+                user.setPostalCode(userProfile.getPostalCode().replace("-",""));
             }
             if (!ObjectUtils.isEmpty(userProfile.getNeighbourhood())) {
                 user.setNeighbourhood(userProfile.getNeighbourhood());
@@ -151,7 +151,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(signUpRequest.getEmail());
         user.setPassword(bCryptPasswordEncoder.encode(signUpRequest.getPassword()));
         user.setBirthdayDate(signUpRequest.getBirthdayDate());
-        user.setPostalCode(signUpRequest.getPostalCode());
+        user.setPostalCode(signUpRequest.getPostalCode().replace("-",""));
         user.setNeighbourhood(signUpRequest.getNeighbourhood());
 
         return AuthResponse.builder()

@@ -13,5 +13,5 @@ import java.util.UUID;
 @Repository
 public interface PostRepository extends JpaRepository<Post, UUID> {
 
-    List<Post> findPostByPostTypeOrderByCreatedAtDesc(int postType);
+    List<Post> findPostByPostTypeAndPostLocalizationOrderByCreatedAtDesc(int postType,String postLocalization);
 }

@@ -33,8 +33,8 @@ public class PostController {
     }
 
     @GetMapping("/{postType}")
-    private ResponseEntity<?> getPostByType(@PathVariable int postType) {
-        return ResponseEntity.ok(postService.getPostByType(postType));
+    private ResponseEntity<?> getPostByType(@PathVariable int postType, @CurrentUser UserPrincipal currentUser) {
+        return ResponseEntity.ok(postService.getPostByType(postType, currentUser));
     }
 
     @DeleteMapping("/delete/{postId}")
