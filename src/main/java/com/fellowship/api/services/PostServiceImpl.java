@@ -83,7 +83,7 @@ public class PostServiceImpl implements PostService, CheerService {
                 .findByUserId(UUID.fromString(cheerDTO.getUserId()));
 
         if (optionalCheer.isPresent()) {
-            optionalCheer.get().setActive(false);
+            optionalCheer.get().setActive(cheerDTO.isActive());
             return buildCheerDTO(cheerRepository.save(optionalCheer.get()));
         }
         else {
