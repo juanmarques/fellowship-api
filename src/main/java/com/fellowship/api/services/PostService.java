@@ -15,5 +15,5 @@ public interface PostService {
     PostDTO createPost(PostDTO postDTO, @CurrentUser UserPrincipal currentUser);
     void deletePost (String postId);
     void reportPost (PostDTO postDTO);
-    List<PostDTO> getPostByType(int postType,@CurrentUser UserPrincipal currentUser);
+    List<PostDTO> getPostByTypeAndPostalCode(int postType,String postalCode);
 }

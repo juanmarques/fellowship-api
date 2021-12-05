@@ -32,9 +32,9 @@ public class PostController {
         return ResponseEntity.ok(postService.createPost(postDTO, currentUser));
     }
 
-    @GetMapping("/{postType}")
-    private ResponseEntity<?> getPostByType(@PathVariable int postType, @CurrentUser UserPrincipal currentUser) {
-        return ResponseEntity.ok(postService.getPostByType(postType, currentUser));
+    @GetMapping("/{postType}/{postalCode}")
+    private ResponseEntity<?> getPostByTypeAndPostalCode(@PathVariable int postType,@PathVariable String postalCode) {
+        return ResponseEntity.ok(postService.getPostByTypeAndPostalCode(postType, postalCode));
     }
 
     @DeleteMapping("/delete/{postId}")
