@@ -22,7 +22,7 @@ public class UtilsServiceImpl implements UtilsService {
     @Override
     public List<NeighbourhoodsDTO> findAllNeighbourhoods() {
 
-        return userRepository.findAllNeighbourhoods().parallelStream()
+        return userRepository.findAllNeighbourhoods().parallelStream().distinct()
                 .map(neighbourhoodsSample -> NeighbourhoodsDTO.builder()
                         .label(neighbourhoodsSample.getNeighbourhood())
                         .id(neighbourhoodsSample.getPostalCode())
