@@ -66,7 +66,7 @@ public class PostServiceImpl implements PostService, CheerService {
     }
 
     @Override
-    public List<PostDTO> getPostByType(int postType, @CurrentUser UserPrincipal currentUser) {
+    public List<PostDTO> getPostByType(int postType,@CurrentUser UserPrincipal currentUser) {
 
         return postRepository.findPostByPostTypeAndPostLocalizationOrderByCreatedAtDesc(postType,
                 userRepository.findById(UUID.fromString(currentUser.getId())).orElseThrow().getPostalCode())
@@ -79,23 +79,22 @@ public class PostServiceImpl implements PostService, CheerService {
     @Override
     public CheerDTO addLike(CheerDTO cheerDTO, UserPrincipal currentUser) {
 
-        Optional<Cheer> optionalCheer;
+        Optional<Cheer> optionalCheer = cheerRepository
+                .findByUserId(UUID.fromString(cheerDTO.getUserId()));
 
-        if (cheerDTO.getCheerId() != null) {
-            optionalCheer = cheerRepository.findById(UUID.fromString(cheerDTO.getCheerId()));
-            if (optionalCheer.isPresent()) {
-                optionalCheer.get().setActive(false);
-                return buildCheerDTO(cheerRepository.save(optionalCheer.get()));
-            }
+        if (optionalCheer.isPresent()) {
+            optionalCheer.get().setActive(false);
+            return buildCheerDTO(cheerRepository.save(optionalCheer.get()));
         }
+        else {
+            Cheer cheer = new Cheer();
 
-        Cheer cheer = new Cheer();
+            cheer.setPost(postRepository.findById(UUID.fromString(cheerDTO.getPostId())).orElseThrow());
+            cheer.setFellowshipUser(this.userRepository.findById(UUID.fromString(currentUser.getId())).orElseThrow());
+            cheer.setActive(true);
 
-        cheer.setPost(postRepository.findById(UUID.fromString(cheerDTO.getPostId())).orElseThrow());
-        cheer.setFellowshipUser(this.userRepository.findById(UUID.fromString(currentUser.getId())).orElseThrow());
-        cheer.setActive(true);
-
-        return buildCheerDTO(cheerRepository.save(cheer));
+            return buildCheerDTO(cheerRepository.save(cheer));
+        }
     }
 
     @Override
